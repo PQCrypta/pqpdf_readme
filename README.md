@@ -110,8 +110,8 @@ Other PDF tools that offer AI analysis route your document content to OpenAI, Cl
 ## Architecture
 
 ```
-Browser (HTTPS / HTTP3 / QUIC)
-        │
+Browser / API client (HTTPS / HTTP3 / QUIC)
+        │  api.pqpdf.com — HTTP/3 only (h2 stripped from TCP ALPN; HTTP/2 → 426)
         ▼
 ┌──────────────────────────────────────────────────────────┐
 │  pqcrypta-proxy  (Rust, HTTP/3+QUIC, PQC TLS)            │
@@ -1933,7 +1933,8 @@ A 20-page document at 200 DPI takes approximately 100 seconds. The UI shows a li
 | Layer | Technology |
 |---|---|
 | Server | PHP 8.4 |
-| HTTP | Apache with HTTP/2 |
+| HTTP (public) | HTTP/3 over QUIC (pqcrypta-proxy) — `api.pqpdf.com` is HTTP/3-only; HTTP/2 and HTTP/1.1 receive `426 Upgrade Required` |
+| HTTP (internal) | Apache with HTTP/2 (proxy → backend) |
 | Styling | Vanilla CSS (CSS variables, Grid, custom animations) |
 | Scripts | Vanilla ES6 JavaScript modules (`type="module"`, no framework) |
 | PDF engines | Ghostscript, Poppler, qpdf, LibreOffice, PyMuPDF, ImageMagick, Playwright/Chromium |
@@ -2169,16 +2170,16 @@ Rate-exempt operations (do not count against limits): `esign-status`, `esign-pre
 
 ```bash
 # List all valid operation names — no key required
-curl https://api.pqpdf.com/v1/operations
+curl --http3-only https://api.pqpdf.com/v1/operations
 
 # Health check — no key required
-curl https://api.pqpdf.com/v1/health
+curl --http3-only https://api.pqpdf.com/v1/health
 ```
 
 ### Compress a PDF
 
 ```bash
-curl -X POST https://api.pqpdf.com/v1/compress \
+curl --http3-only -X POST https://api.pqpdf.com/v1/compress \
   -H "X-API-Key: pqpdf_your_key_here" \
   -F "file=@input.pdf" \
   -F "quality=ebook" \
@@ -2198,7 +2199,7 @@ curl -X POST https://api.pqpdf.com/v1/compress \
 ### Merge PDFs
 
 ```bash
-curl -X POST https://api.pqpdf.com/v1/merge \
+curl --http3-only -X POST https://api.pqpdf.com/v1/merge \
   -H "X-API-Key: pqpdf_your_key_here" \
   -F "file[]=@doc1.pdf" \
   -F "file[]=@doc2.pdf" \
@@ -2209,7 +2210,7 @@ curl -X POST https://api.pqpdf.com/v1/merge \
 ### OCR a scanned PDF
 
 ```bash
-curl -X POST https://api.pqpdf.com/v1/ocr \
+curl --http3-only -X POST https://api.pqpdf.com/v1/ocr \
   -H "X-API-Key: pqpdf_your_key_here" \
   -F "file=@scanned.pdf" \
   -F "lang=eng" \
@@ -2227,13 +2228,13 @@ Async flow required for files > 10 MB (sync `pdf-scan` handles up to 10 MB).
 
 ```bash
 # Step 1 — start scan
-curl -X POST https://api.pqpdf.com/v1/pdf-scan-start \
+curl --http3-only -X POST https://api.pqpdf.com/v1/pdf-scan-start \
   -H "X-API-Key: pqpdf_your_key_here" \
   -F "file=@suspect.pdf"
 # → { "started": true, "token": "pdftool_abc123..." }
 
 # Step 2 — poll until ready (every 2 s)
-curl -X POST https://api.pqpdf.com/v1/pdf-scan-poll \
+curl --http3-only -X POST https://api.pqpdf.com/v1/pdf-scan-poll \
   -H "X-API-Key: pqpdf_your_key_here" \
   -F "token=pdftool_abc123..."
 ```
@@ -2261,14 +2262,14 @@ curl -X POST https://api.pqpdf.com/v1/pdf-scan-poll \
 ```bash
 # 1. Open a PDF in a session
 SESSION="my-session-$(date +%s)"
-curl -X POST https://api.pqpdf.com/v1/edit-init \
+curl --http3-only -X POST https://api.pqpdf.com/v1/edit-init \
   -H "X-API-Key: pqpdf_your_key_here" \
   -H "X-Session-Id: $SESSION" \
   -F "file=@document.pdf"
 # → { "token": "...", "page_count": 5, "thumbnails": [...] }
 
 # 2. Queue a text annotation
-curl -X POST https://api.pqpdf.com/v1/edit-doc-op \
+curl --http3-only -X POST https://api.pqpdf.com/v1/edit-doc-op \
   -H "X-API-Key: pqpdf_your_key_here" \
   -H "X-Session-Id: $SESSION" \
   -F "token=..." \
@@ -2277,7 +2278,7 @@ curl -X POST https://api.pqpdf.com/v1/edit-doc-op \
   -F 'data={"x":100,"y":200,"text":"Hello","fontSize":14}'
 
 # 3. Render and download
-curl -X POST https://api.pqpdf.com/v1/edit-apply \
+curl --http3-only -X POST https://api.pqpdf.com/v1/edit-apply \
   -H "X-API-Key: pqpdf_your_key_here" \
   -H "X-Session-Id: $SESSION" \
   -F "token=..." \
