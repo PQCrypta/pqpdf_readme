@@ -33,7 +33,7 @@ Other PDF tools that offer AI analysis route your document content to OpenAI, Cl
 
 ---
 
-## Tools (44)
+## Tools (45)
 
 ### Core Manipulation
 
@@ -74,7 +74,8 @@ Other PDF tools that offer AI analysis route your document content to OpenAI, Cl
 
 | Tool | Link | Description |
 |---|---|---|
-| **PDF Forensics Scanner** | [/tools/scan.php](https://pqpdf.com/tools/scan.php) | Forensic analysis across **44 independent engines** — most comprehensive PDF forensics tool available. **New engines (31–43):** PDF Token Obfuscation detector (hex-escaped name token decoding — /J#61vaScript → /JavaScript — whitespace-split keyword injection, formfeed byte evasion), XFA FormCalc parser (exec/openURL/submit/initialize auto-execute), PDF action dependency graph (cycles · deep chains · fan-in · sleeper nodes), OCG layer cloaking (never-visible · screen/print divergence · hidden clickable links), Unicode & invisible text (RLO U+202E · rendering mode 3/7 · homograph domains), trailer chain forensics (raw /Prev walk · ID mutation · /Root swap Shadow Attack), codec exploit parameter validation (CCITTFax OOB · JBIG2Globals CVE-2009-0658 · DCT mismatch · multi-filter chains), physical entropy topology (PDF-structure-aware sliding window · post-EOF · entropy cliffs), image steganography (LSB chi-square · tracking beacons · JPEG EXIF anomalies), PDF/A compliance fraud (DLP bypass detection), JavaScript behavioral emulation (Node.js vm + Acrobat API stub · LAUNCH_URL · SUBMIT_FORM · MAIL), font CharString emulator (Type 1 decrypt + stack machine · seac OOB · depth overflow), XRef integrity graph (phantom objects · orphan sleepers · free-entry bugs · length fraud). **All existing engines:** structural integrity · 45+ byte signatures · stream entropy · metadata forensics (ExifTool) · font analysis · CVE patterns · qpdf · YARA (24 rules including CVE-2024-41869 UAF + CVE-2024-45112 type confusion) · PeePDF · **dynamic sandbox — 6 renderers** (Ghostscript · MuPDF · Poppler · LibreOffice Draw · Chromium PDFium · pdf.js/Node — strace + Linux namespaces, covering browser, desktop, and OLE attack surfaces) · ClamAV · ML+SHAP (IsolationForest + RandomForest + LightGBM) · six-parser differential · polyglot detection · JS AST deobfuscation · threat intelligence (6.4M+ local indicators) · signature forensics · phishing · embedded file analysis · campaign attribution · weighted correlation engine (60+ compound patterns + MITRE ATT&CK). Results across **24 analysis tabs**: Summary · Threats · Score · Engines · URLs · Streams · ML · Sandbox · TI · MITRE · Differential · Polyglot · Phishing · Embedded · Signature · History · Annotations · Metadata · XFA · Action Graph · Deep Forensics · **🤖 AI Forensic Report** (Qwen 2.5 1.5B Instruct synthesises all 45 engine outputs into threat verdict + confidence + executive summary + key findings + MITRE technique grid + recommended actions — structured JSON, fully local, ~15–25 s CPU inference) · Raw JSON · Raw Forensics. **9-mode sanitize.** |
+| **PDF Forensics** | [/tools/scan.php](https://pqpdf.com/tools/scan.php) | Forensic analysis across **44 independent engines** — most comprehensive PDF forensics tool available. **New engines (31–43):** PDF Token Obfuscation detector (hex-escaped name token decoding — /J#61vaScript → /JavaScript — whitespace-split keyword injection, formfeed byte evasion), XFA FormCalc parser (exec/openURL/submit/initialize auto-execute), PDF action dependency graph (cycles · deep chains · fan-in · sleeper nodes), OCG layer cloaking (never-visible · screen/print divergence · hidden clickable links), Unicode & invisible text (RLO U+202E · rendering mode 3/7 · homograph domains), trailer chain forensics (raw /Prev walk · ID mutation · /Root swap Shadow Attack), codec exploit parameter validation (CCITTFax OOB · JBIG2Globals CVE-2009-0658 · DCT mismatch · multi-filter chains), physical entropy topology (PDF-structure-aware sliding window · post-EOF · entropy cliffs), image steganography (LSB chi-square · tracking beacons · JPEG EXIF anomalies), PDF/A compliance fraud (DLP bypass detection), JavaScript behavioral emulation (Node.js vm + Acrobat API stub · LAUNCH_URL · SUBMIT_FORM · MAIL), font CharString emulator (Type 1 decrypt + stack machine · seac OOB · depth overflow), XRef integrity graph (phantom objects · orphan sleepers · free-entry bugs · length fraud). **All existing engines:** structural integrity · 45+ byte signatures · stream entropy · metadata forensics (ExifTool) · font analysis · CVE patterns · qpdf · YARA (24 rules including CVE-2024-41869 UAF + CVE-2024-45112 type confusion) · PeePDF · **dynamic sandbox — 6 renderers** (Ghostscript · MuPDF · Poppler · LibreOffice Draw · Chromium PDFium · pdf.js/Node — strace + Linux namespaces, covering browser, desktop, and OLE attack surfaces) · ClamAV · ML+SHAP (IsolationForest + RandomForest + LightGBM) · six-parser differential · polyglot detection · JS AST deobfuscation · threat intelligence (6.4M+ local indicators) · signature forensics · phishing · embedded file analysis · campaign attribution · weighted correlation engine (60+ compound patterns + MITRE ATT&CK). Results across **24 analysis tabs**: Summary · Threats · Score · Engines · URLs · Streams · ML · Sandbox · TI · MITRE · Differential · Polyglot · Phishing · Embedded · Signature · History · Annotations · Metadata · XFA · Action Graph · Deep Forensics · **🤖 AI Forensic Report** (Qwen 2.5 1.5B Instruct synthesises all 45 engine outputs into threat verdict + confidence + executive summary + key findings + MITRE technique grid + recommended actions — structured JSON, fully local, ~15–25 s CPU inference) · Raw JSON · Raw Forensics. **9-mode sanitize.** |
+| **Office Forensics** | [/tools/office-scan.php](https://pqpdf.com/tools/office-scan.php) | Deep forensic analysis and surgical sanitization for Office documents (.docx, .xlsx, .pptx, .doc, .xls, .ppt, .xlsm, .docm, .pptm, .rtf, .msg, .eml, .one, .vsdx). **8 dedicated engines:** macros (VBA decompilation, AutoOpen/AutoExec/Document_Open/Workbook_Open event detection, 60+ LOLBin IOCs with MITRE T1137), XLM (XLMMacroDeobfuscator — EXEC/CALL/CHAR/UrlDownloadToFile, DDE/DDEAUTO, obfuscated formula chains), OLE (CFB container structure, OLE package extraction, VBA macro stream extraction, suspicious OLE objects), metadata (document properties, revision history, last-saved-by, custom XML data, creation/modification timestamps), IOC (URL extraction from content and macros, IP/domain extraction, MITRE-mapped suspicious keyword detection, embedded credentials/API keys), container (OPC/OOXML structure integrity, [Content_Types].xml vs ZIP entry verification, namespace and relationship validation, format forgery detection), crypto (encrypted document detection and password-protection analysis), libreoffice (behaviour-based analysis via LibreOffice subprocess with stderr monitoring for security-relevant output). **AI forensic summary** generated after each scan by Qwen 2.5 1.5B — threat verdict, key findings, MITRE technique IDs, recommended actions. **4 sanitize modes:** convert to static PDF (destroys all active content via LibreOffice), strip macros only (removes VBA/XLM, preserves content), strip metadata (author, revision history, custom properties), convert OLE2→OOXML (upgrades .doc/.xls/.ppt to modern format, eliminates OLE exploit surface). Async scan queue — submit returns job_id, poll with GET for results. |
 | **Protect PDF** | [/tools/protect.php](https://pqpdf.com/tools/protect.php) | Dual-mode protection: **Standard** (AES-256-CBC server-side) or **PQC** (client-side quantum-safe encryption). See details below. |
 | **Unlock PDF** | [/tools/unlock.php](https://pqpdf.com/tools/unlock.php) | Remove password protection (owner password required). Detects the encryption type client-side by reading the PDF header before upload — shows a `🔒 AES-256 encrypted` badge for password-protected files or a `✅ No password protection detected` badge if the file is already unlocked. PQC bundles (`.pqcpdf`) are auto-detected by extension and routed to the quantum-safe decryption panel. |
 | **Redact PDF** | [/tools/redact.php](https://pqpdf.com/tools/redact.php) | Two modes: text-pattern redaction (with multi-pattern list, case sensitivity, whole-word matching) or mouse-drawn region redaction on a canvas preview. Custom fill colour. **🤖 AI Redaction Suggestions** — Qwen 2.5 1.5B analyses extracted text and proposes patterns by PII category (names, emails, phone numbers, IDs, financial data, etc.) with one-click add to the redaction list. |
@@ -2150,10 +2151,11 @@ pdf/
 
 ## REST API
 
-The PQ PDF REST API exposes all 83 PDF operations programmatically over HTTPS with API-key authentication. Full reference at [pqpdf.com/developer.php](https://pqpdf.com/developer.php).
+The PQ PDF REST API exposes all 83 PDF operations plus Office Forensics endpoints programmatically over HTTPS with API-key authentication. Full reference at [pqpdf.com/developer.php](https://pqpdf.com/developer.php).
 
 **Base URL:** `https://api.pqpdf.com`  
-**Request format:** `POST /v1/{operation}` — `multipart/form-data`  
+**PDF operations:** `POST /v1/{operation}` — `multipart/form-data`  
+**Office Forensics:** `POST /v1/office-scan`, `GET /v1/office-scan/:job_id`, `POST /v1/office-sanitize/{pdf|macro|meta|ooxml}`  
 **Auth:** `X-API-Key: pqpdf_<48 hex chars>` on every request  
 **Stateful ops:** also require `X-Session-Id: <uuid>` to bind the session
 
@@ -2164,7 +2166,7 @@ The PQ PDF REST API exposes all 83 PDF operations programmatically over HTTPS wi
 | Requests / hour | 100 | Configurable per key at creation (`rate_limit_per_hour`) |
 | Requests / day | 500 | Configurable per key at creation (`rate_limit_per_day`) |
 
-Rate-exempt operations (do not count against limits): `esign-status`, `esign-preview`, `esign-resume`, `pdf-scan-poll`, `edit-ping`.
+Rate-exempt operations (do not count against limits): `esign-status`, `esign-preview`, `esign-resume`, `pdf-scan-poll`, `edit-ping`, `GET /v1/office-scan/:job_id`.
 
 ### Discovery
 
@@ -2256,6 +2258,75 @@ curl --http3-only -X POST https://api.pqpdf.com/v1/pdf-scan-poll \
   }
 }
 ```
+
+### Office Forensics — scan & poll
+
+Office document scanning uses dedicated routes (not the generic `/v1/{operation}` pattern) and an async job queue.
+
+```bash
+# Submit — returns job_id immediately
+curl --http3-only -X POST https://api.pqpdf.com/v1/office-scan \
+  -H "X-API-Key: pqpdf_your_key_here" \
+  -F "file=@report.docx"
+# → {"job_id":"b42f57f8-449e-4a3f-97dc-baec65ac03a2","status":"queued"}
+
+# Poll — rate-exempt, does not consume hourly quota
+curl --http3-only https://api.pqpdf.com/v1/office-scan/b42f57f8-449e-4a3f-97dc-baec65ac03a2 \
+  -H "X-API-Key: pqpdf_your_key_here"
+```
+
+**Poll response (complete):**
+```json
+{
+  "status": "complete",
+  "result": {
+    "file_info": { "filename": "report.docx", "size_bytes": 38000, "format": "DOCX" },
+    "risk_assessment": { "level": "HIGH", "total_score": 72, "findings_count": 8 },
+    "all_findings": [
+      { "engine": "macros", "severity": "CRITICAL", "finding": "VBA AutoOpen macro detected", "mitre": "T1137" },
+      { "engine": "ioc",    "severity": "HIGH",     "finding": "Suspicious URL in macro body" }
+    ],
+    "ai_forensic_summary": {
+      "threat_verdict": "MALICIOUS",
+      "confidence": "HIGH",
+      "executive_summary": "Document contains an AutoOpen macro that downloads a remote payload.",
+      "recommended_actions": ["Do not open", "Submit to sandbox"]
+    }
+  }
+}
+```
+
+Optional `engines` field (default: all 8): `macros`, `xlm`, `ole`, `metadata`, `ioc`, `container`, `crypto`, `libreoffice`.
+
+### Office Forensics — sanitize
+
+```bash
+# Convert to static PDF (safest — destroys all active content)
+curl --http3-only -X POST https://api.pqpdf.com/v1/office-sanitize/pdf \
+  -H "X-API-Key: pqpdf_your_key_here" \
+  -F "file=@report.docx" \
+  -o report_safe.pdf
+
+# Strip macros only (preserves content and formatting)
+curl --http3-only -X POST https://api.pqpdf.com/v1/office-sanitize/macro \
+  -H "X-API-Key: pqpdf_your_key_here" \
+  -F "file=@report.docm" \
+  -o report_clean.docx
+
+# Strip all metadata
+curl --http3-only -X POST https://api.pqpdf.com/v1/office-sanitize/meta \
+  -H "X-API-Key: pqpdf_your_key_here" \
+  -F "file=@report.docx" \
+  -o report_anon.docx
+
+# Upgrade legacy OLE2 format to OOXML
+curl --http3-only -X POST https://api.pqpdf.com/v1/office-sanitize/ooxml \
+  -H "X-API-Key: pqpdf_your_key_here" \
+  -F "file=@legacy.doc" \
+  -o upgraded.docx
+```
+
+All sanitize endpoints return `Content-Disposition: attachment; filename=…_sanitized.*`.
 
 ### Stateful editor session
 
