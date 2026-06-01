@@ -558,12 +558,28 @@ Each indicator contributes base points multiplied by `min(count, 3)`:
 
 The Correlation Engine (㊹) adds weighted bonus points (35–100) on top for dangerous indicator combinations, using log-scaled weighted voting and ML anomaly feedback amplification. Final score is capped at 999.
 
-| Score | Risk Level |
+#### Multi-axis forensic classification
+
+This is a full forensics tool, not just a malware scanner. Every indicator is classified onto one of four forensic axes (central `_classify_axis` table), and the headline score reflects only genuine threat — not document complexity:
+
+| Axis | Drives verdict? | Examples |
+|---|---|---|
+| **exploit** | ✅ yes | code execution, memory corruption, malware/dropper delivery, AV/threat-intel hits, exploit byte patterns |
+| **tampering** | ✅ yes | signature forgery, shadow documents, post-signing injection, parser-confusion hiding content |
+| **deception** | ⚠️ grades on its own axis | content/semantic-determinism manipulation — V/AP value-vs-appearance divergence, font glyph remapping, OCR text-layer poisoning, `/Alt` & `/ActualText` prompt injection, homoglyphs, phishing |
+| **informational** | ❌ context only | neutral modern-PDF capability & structure (object streams, incremental updates, multiple `%%EOF`, XFA/`/Perms`/JS *presence*) |
+
+The headline **Threat Score** = exploit + tampering and drives the verdict band. A confirmed medium-or-higher **deception** finding grades the verdict on its own axis even when the threat score is zero (if V ≠ AP, the document is graded accordingly). The scan result exposes `threat_score`, `deception_score`, `structural_score`, `axis_scores`, `verdict_driver` (malware / integrity / deception / none), and a per-indicator `axis`. Deception and structural findings never inflate the malware verdict.
+
+| Threat Score | Risk Level |
 |---|---|
 | 0 | Clean |
-| 1–14 | Low |
-| 15–54 | Suspicious |
-| 55–999 | Dangerous |
+| 1–29 | Low |
+| 30–149 | Suspicious |
+| 150–349 | High Risk |
+| 350–999 | Dangerous |
+
+A no-execution-vector gate caps malware-driven verdicts (a document with no active content cannot self-execute), but **does not** apply to tampering/deception — a forged or semantically-divergent document is graded regardless. Low-severity deception (reading-order / multi-column ambiguity) is an informational observation and does not escalate the verdict.
 
 ### Engine ① — Structure Validator
 
@@ -674,8 +690,8 @@ Nine specific CVE signatures matched by boolean lambda tests against raw bytes:
 | `util.printd` present | CVE-2007-5020 | Critical |
 | `Collab.collectEmailInfo` present | CVE-2007-5659 | Critical |
 | `media.newPlayer` present | CVE-2009-4324 | Critical |
-| `%u0c0c%u0c0c` or binary `\x0c×8` | Heapspray (0x0C fill) | Critical |
-| `%u0d0d%u0d0d` | Heapspray (0x0D fill) | Critical |
+| `%u0c0c%u0c0c` (JS string) or a binary run of `\x0c` ≥256 bytes | Heapspray (0x0C fill) | Critical |
+| `%u0d0d%u0d0d` (JS string) or a binary run of `\x0d` ≥256 bytes | Heapspray (0x0D fill) | Critical |
 
 ### Engine ⑨ — Structural Statistics
 
