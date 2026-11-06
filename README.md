@@ -778,7 +778,7 @@ Compiles and matches 24 custom YARA rules targeting PDF-specific attack byte pat
 Parses the full PDF object tree using the PeePDF framework — an entirely independent parser from PyMuPDF:
 
 - **Vulnerability patterns** — PeePDF's built-in vulnerability detector flags known CVE pattern combinations; each confirmed pattern reported as Critical
-- **Suspicious element location** — reports exact object IDs for dangerous elements from both `Suspicious elements` and `Dangerous elements` dictionaries: `/Launch`, `getIcon()`, `printf()`, `unescape()`, `exportDataObject()`, `submitForm()`, `/EmbeddedFile`, `/JS`, `/JavaScript`, `eval()`, `/OpenAction`, `/AA`, `/XFA`, `/URI`
+- **Suspicious element location** — reports exact object IDs for what peepdf finds in each version of the document (its per-version `Elements`, `Events`, `Actions` and `Vulns`): `/Launch`, `getIcon()`, `printf()`, `unescape()`, `exportDataObject()`, `submitForm()`, `/EmbeddedFile`, `/JS`, `/JavaScript`, `eval()`, `/OpenAction`, `/AA`, `/XFA`, `/URI`
 - **JavaScript object inventory** — lists all PDF object IDs containing JavaScript
 - **Independent verification** — cross-checks PyMuPDF-based findings; if both parsers flag the same element, the compound risk in Engine ㊹ is elevated
 - **Summary export** — PDF version, object count, stream count, and vulnerability count exported to structure dictionary
